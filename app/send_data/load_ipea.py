@@ -29,7 +29,12 @@ def load(data_location):
         log.debug(f"{len(rows)} rows read.")
         rows_loaded_in_file = 0
         for row in rows[1::]:
-            sql_statement = f"INSERT INTO EDA.IPEA (SERCODIGO,VALDATA,VALVALOR,NIVNOME,TERCODIGO,CREATED_ON) VALUES ('{row[0]}','{row[1]}',{row[2]},'{row[3]}','{row[4]}', CURRENT_TIMESTAMP)"
+            sercodigo = row[0] if row[0] else "NULL"
+            valdata = row[1] if row[1] else "NULL"
+            valvalor = row[2] if row[2] else "NULL"
+            nivnome = row[3] if row[3] else "NULL"
+            tercodigo = row[4] if row[4] else "NULL"
+            sql_statement = f"INSERT INTO EDA.IPEA (SERCODIGO,VALDATA,VALVALOR,NIVNOME,TERCODIGO,CREATED_ON) VALUES ('{sercodigo}','{valdata}',{valvalor},'{nivnome}','{tercodigo}', CURRENT_TIMESTAMP)"
             dao.execute(sql_statement)
             rows_loaded_in_file += 1
         rows_loaded += rows_loaded_in_file
