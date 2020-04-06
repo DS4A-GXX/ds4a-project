@@ -10,7 +10,8 @@ log = logging.getLogger(__name__)
 
 def main():
     log.info("Running... ")
-    load("/Users/rodam/code/ds4a/ds4a-project/data/ipea/")
+    load(settings.DATA_DIR)
+    log.info("... END!")
 
 
 if __name__ == "__main__":
