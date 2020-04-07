@@ -1,5 +1,6 @@
 import os
 import logging
+import app.settings as settings
 from utils.csv_utils import read_csv
 from utils.db import BasicDAO
 
@@ -43,3 +44,30 @@ def load(data_location):
         )
         dao.commit()
     log.info(f"{rows_loaded} rows loaded in this batch")
+
+
+def load_territorios():
+    dao = BasicDAO()
+    csv_file = f"{settings.DATA_DIR}/ipea/TERRITORIOS.csv"
+    log.debug(f"Reading: {csv_file}")
+    rows = read_csv(f"{csv_file}")
+    log.debug(f"{len(rows)} rows read.")
+    rows_loaded_in_file = 0
+    for row in rows[1::]:
+        nivnome = row[0] if row[0] else "NULL"
+        tercodigo = row[1] if row[1] else "NULL"
+        ternome = row[2] if row[2] else "NULL"
+        ternomepadrao = row[3] if row[3] else "NULL"
+        tercapital = row[4] if row[4] else "NULL"
+        terarea = row[5] if row[5] else "NULL"
+        nivamc = row[6] if row[6] else "NULL"
+        nivnome = nivnome.replace("'", "")
+        ternome = ternome.replace("'", "")
+        ternomepadrao = ternomepadrao.replace("'", "")
+
+        sql_statement = f"INSERT INTO eda.ipea_territorios(nivnome, tercodigo, ternome, ternomepadrao, tercapital, terarea, nivamc) VALUES ('{nivnome}', '{tercodigo}', '{ternome}', '{ternomepadrao}', {tercapital}, {terarea}, {nivamc});"
+        dao.execute(sql_statement)
+        rows_loaded_in_file += 1
+
+    log.info(f"The file {csv_file} was loaded with {rows_loaded_in_file}")
+    dao.commit()

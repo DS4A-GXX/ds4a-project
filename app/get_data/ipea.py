@@ -1,7 +1,9 @@
 import requests
+from app.settings import DATA_DIR
 from utils.csv_utils import write_csv
 
 metadata_url = "http://www.ipeadata.gov.br/api/odata4/Metadados"
+territorios = "http://www.ipeadata.gov.br/api/odata4/Territorios"
 base_url = "http://www.ipeadata.gov.br/api/odata4/ValoresSerie(SERCODIGO='{0}')"
 
 
@@ -13,6 +15,16 @@ def get_metadata():
     print(metadata_items[0].keys())
 
 
+def get_territorios():
+    r = requests.get(territorios)
+    territorios_json = r.json()
+    territorios_items = territorios_json.get("value")
+    print(f"get_territorios got {len(territorios_items)} items.")
+    header = list(territorios_items[0].keys())
+    data_to_write = [list(item.values()) for item in territorios_items]
+    write_csv(data_to_write, header, f"{DATA_DIR}ipea/TERRITORIOS.csv")
+
+
 def get_data(sercodigo):
     url_to_get = base_url.format(sercodigo)
     print(f"Requesting data to {url_to_get}")
@@ -22,7 +34,7 @@ def get_data(sercodigo):
     print(f"get_data got {len(data_items)} items for sercodigo={sercodigo}")
     header = list(data_items[0].keys())
     data_to_write = [list(item.values()) for item in data_items]
-    write_csv(data_to_write, header, f"../data/ipea/{sercodigo}.csv")
+    write_csv(data_to_write, header, f"{DATA_DIR}ipea/{sercodigo}.csv")
 
 
 def get_ipea_data(codes_to_get):
