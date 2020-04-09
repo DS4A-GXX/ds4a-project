@@ -53,6 +53,7 @@ def load_territorios():
     rows = read_csv(f"{csv_file}")
     log.debug(f"{len(rows)} rows read.")
     rows_loaded_in_file = 0
+    x = 0
     for row in rows[1::]:
         nivnome = row[0] if row[0] else "NULL"
         tercodigo = row[1] if row[1] else "NULL"
@@ -66,8 +67,14 @@ def load_territorios():
         ternomepadrao = ternomepadrao.replace("'", "")
 
         sql_statement = f"INSERT INTO eda.ipea_territorios(nivnome, tercodigo, ternome, ternomepadrao, tercapital, terarea, nivamc) VALUES ('{nivnome}', '{tercodigo}', '{ternome}', '{ternomepadrao}', {tercapital}, {terarea}, {nivamc});"
+        log.info(f"load_territorios: {sql_statement}")
         dao.execute(sql_statement)
         rows_loaded_in_file += 1
+        if x > 10:
+            dao.commit()
+            x = 0
+        else:
+            x += 1
 
     log.info(f"The file {csv_file} was loaded with {rows_loaded_in_file}")
     dao.commit()
