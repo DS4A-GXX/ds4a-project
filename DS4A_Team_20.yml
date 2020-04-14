@@ -1,4 +1,4 @@
-name: team_20_week4
+name: DS4A_Team_20
 channels:
 - conda-forge
 - defaults
@@ -13,3 +13,7 @@ dependencies:
 - pandas
 - sqlalchemy
 - psycopg2
+- numpy
+- pip
+- python
+- boto3
