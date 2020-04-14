@@ -17,3 +17,6 @@ dependencies:
 - pip
 - python
 - boto3
+- matplotlib
+- scikit-learn
+- seaborn
