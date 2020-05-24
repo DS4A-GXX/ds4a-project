@@ -10,7 +10,7 @@ from flask_restplus import Resource
 
 log = logging.getLogger(__name__)
 
-ns = api.namespace("score", description="Health Score")
+ns = api.namespace("health", description="Health Score")
 
 
 @ns.route("/score/")
