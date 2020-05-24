@@ -15,10 +15,10 @@ ns = api.namespace("health", description="Health Score")
 
 @ns.route("/score/")
 class ScoreObject(Resource):
-    @auth.login_required
     @api.expect(score_input)
     def post(self):
         data = request.json
+        log.debug(data)
         gender = data.get("gender")
         income = data.get("income")
         members = data.get("members")
