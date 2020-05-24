@@ -1,4 +1,7 @@
 
+SWAGGER_UI_DOC_EXPANSION = "list"
+RESTPLUS_VALIDATE = True
+RESTPLUS_MASK_SWAGGER = False
 
 # LOG SETTINGS
 LOG_FORMAT = "%(asctime)s-%(levelname)s-%(name)s-:%(message)s"
